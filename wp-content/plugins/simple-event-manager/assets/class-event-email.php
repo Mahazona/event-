@@ -1,5 +1,5 @@
 <?php
-class SEM_Email_Notifications {
+class EventEmail {
     
     public function __construct() {
         add_action('transition_post_status', array($this, 'send_event_notification'), 10, 3);
@@ -19,17 +19,17 @@ class SEM_Email_Notifications {
         $event_time = get_post_meta($post->ID, '_event_time', true);
         $event_location = get_post_meta($post->ID, '_event_location', true);
         
-        $subject = sprintf(__('New Event Published: %s', 'simple-event-manager'), $post->post_title);
+        $subject = 'New Event Published: ' . $post->post_title;
         
-        $message = sprintf(
-            __("A new event has been published:\n\nTitle: %s\nDate: %s\nTime: %s\nLocation: %s\n\nView Event: %s", 'simple-event-manager'),
-            $post->post_title,
-            $event_date ? date('F j, Y', strtotime($event_date)) : __('Not set', 'simple-event-manager'),
-            $event_time ? date('g:i A', strtotime($event_time)) : __('Not set', 'simple-event-manager'),
-            $event_location ?: __('Not set', 'simple-event-manager'),
-            get_permalink($post->ID)
-        );
+        $message = "A new event has been published:\n\n";
+        $message .= "Title: " . $post->post_title . "\n";
+        $message .= "Date: " . ($event_date ? date('F j, Y', strtotime($event_date)) : 'Not set') . "\n";
+        $message .= "Time: " . ($event_time ? date('g:i A', strtotime($event_time)) : 'Not set') . "\n";
+        $message .= "Location: " . ($event_location ? $event_location : 'Not set') . "\n";
+        $message .= "Description: " . strip_tags($post->post_content) . "\n\n";
+        $message .= "View Event: " . get_permalink($post->ID);
         
         wp_mail($admin_email, $subject, $message);
     }
 }
+?>
