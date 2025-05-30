@@ -1,0 +1,49 @@
+/* Admin Styles */
+.sem-rsvp-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.sem-rsvp-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    background: #f9f9f9;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.sem-rsvp-item:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.sem-rsvp-item strong {
+    color: #333;
+}
+
+.sem-rsvp-item small {
+    color: #666;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Event meta boxes */
+.form-table th {
+    font-weight: 600;
+}
+
+.form-table input[type="date"],
+.form-table input[type="time"],
+.form-table input[type="text"] {
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* Settings page */
+.wrap h1 {
+    margin-bottom: 20px;
+}
+
+.form-table input[type="email"] {
+    width: 350px;
+}
