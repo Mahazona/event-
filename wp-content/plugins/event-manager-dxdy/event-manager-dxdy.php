@@ -438,4 +438,29 @@ function sem_deactivate_plugin() {
 }
 register_deactivation_hook( __FILE__, 'sem_deactivate_plugin' );
 
+
+// Add RSVP meta box to Event post type in admin
+add_action('add_meta_boxes', function() {
+    add_meta_box(
+        'event_rsvp_list',
+        __('Event RSVPs', 'simple-event-manager'),
+        function($post) {
+            $rsvps = get_post_meta($post->ID, '_event_rsvps', true);
+            if (is_array($rsvps) && count($rsvps)) {
+                echo '<ul>';
+                foreach ($rsvps as $rsvp) {
+                    echo '<li><strong>' . esc_html($rsvp['name']) . '</strong> (' . esc_html($rsvp['email']) . ')<br><small>' . esc_html($rsvp['date']) . '</small></li>';
+                }
+                echo '</ul>';
+            } else {
+                echo '<em>No RSVPs yet.</em>';
+            }
+        },
+        'event', // post type
+        'normal',
+        'default'
+    );
+});
+
+
 ?>

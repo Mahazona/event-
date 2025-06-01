@@ -82,7 +82,10 @@ function eventmanager_child_display_event_meta( $post_id = null, $show_descripti
 	if ( $event_location ) {
 		$output .= '<p class="sem-event-location"><strong>' . esc_html__( 'Location:', 'eventmanager-child' ) . '</strong> ' . esc_html( $event_location ) . '</p>';
 	}
-    if ( $show_description_label && has_post_content() ) {
+    
+    // Corrected check for post content
+    $post_content = get_post_field( 'post_content', $post_id );
+    if ( $show_description_label && ! empty( trim( $post_content ) ) ) {
         $output .= '<p class="sem-event-description-label"><strong>' . esc_html__( 'Description:', 'eventmanager-child' ) . '</strong></p>';
     }
 

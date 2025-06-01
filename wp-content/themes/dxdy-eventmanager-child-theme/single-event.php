@@ -25,7 +25,6 @@ get_header();
 							// Optional: If you want to show post meta like date published or author,
 							// you can adapt from the parent theme's single.php or content-single.php.
 							// For events, the custom event meta is usually more important.
-							// twenty_twenty_four_post_meta(); // Example if using TT4's meta function
 							?>
 						</header><div class="entry-content">
 							<?php if ( has_post_thumbnail() ) : ?>
@@ -67,6 +66,60 @@ get_header();
 								)
 							);
 							?>
+
+							<!-- RSVP FORM START -->
+							<?php
+							// Handle RSVP form submission
+							if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_rsvp_nonce'])) {
+								if (wp_verify_nonce($_POST['event_rsvp_nonce'], 'event_rsvp')) {
+									$name  = sanitize_text_field($_POST['rsvp_name']);
+									$email = sanitize_email($_POST['rsvp_email']);
+									if ($name && $email) {
+										$rsvps = get_post_meta(get_the_ID(), '_event_rsvps', true);
+										if (!is_array($rsvps)) $rsvps = [];
+										$rsvps[] = [
+											'name'  => $name,
+											'email' => $email,
+											'date'  => current_time('mysql'),
+										];
+										update_post_meta(get_the_ID(), '_event_rsvps', $rsvps);
+										echo '<p style="color:green;">Thank you for your RSVP!</p>';
+									} else {
+										echo '<p style="color:red;">Please enter a valid name and email.</p>';
+									}
+								}
+							}
+							?>
+
+							<form method="post" style="margin-top:2em; margin-bottom:2em; border:1px solid #eee; padding:1em; max-width:400px;">
+								<h3>RSVP for this Event</h3>
+								<p>
+									<label for="rsvp_name">Name:</label><br>
+									<input type="text" name="rsvp_name" id="rsvp_name" required>
+								</p>
+								<p>
+									<label for="rsvp_email">Email:</label><br>
+									<input type="email" name="rsvp_email" id="rsvp_email" required>
+								</p>
+								<?php wp_nonce_field('event_rsvp', 'event_rsvp_nonce'); ?>
+								<p>
+									<button type="submit">RSVP</button>
+								</p>
+							</form>
+
+							<?php
+							// Display RSVP list
+							$rsvps = get_post_meta(get_the_ID(), '_event_rsvps', true);
+							if (is_array($rsvps) && count($rsvps)) {
+								echo '<h4>RSVP List:</h4><ul>';
+								foreach ($rsvps as $rsvp) {
+									echo '<li>' . esc_html($rsvp['name']) . ' (' . esc_html($rsvp['email']) . ')</li>';
+								}
+								echo '</ul>';
+							}
+							?>
+							<!-- RSVP FORM END -->
+
 						</div><?php if ( get_edit_post_link() ) : ?>
 							<footer class="entry-footer default-max-width">
 								<?php
@@ -91,31 +144,18 @@ get_header();
 
 					</article><?php
 					// Previous/next post navigation.
-					$twentytwentyfour_next = is_rtl() ? twenty_twenty_four_get_icon_svg( 'arrow_left', 24 ) : twenty_twenty_four_get_icon_svg( 'arrow_right', 24 );
-					$twentytwentyfour_prev = is_rtl() ? twenty_twenty_four_get_icon_svg( 'arrow_right', 24 ) : twenty_twenty_four_get_icon_svg( 'arrow_left', 24 );
+					// Using simpler text-based navigation to avoid parent theme function dependency.
+					$next_label     = esc_html__( 'Next event', 'eventmanager-child' );
+					$previous_label = esc_html__( 'Previous event', 'eventmanager-child' );
 
-					$twentytwentyfour_next_label     = esc_html__( 'Next event', 'eventmanager-child' );
-					$twentytwentyfour_previous_label = esc_html__( 'Previous event', 'eventmanager-child' );
-                    
-                    // Make sure to check if the function exists if copying from a parent theme
-                    if (function_exists('twenty_twenty_four_get_icon_svg')) {
-                        the_post_navigation(
-                            array(
-                                'next_text' => '<p class="meta-nav">' . $twentytwentyfour_next_label . $twentytwentyfour_next . '</p><p class="post-title">%title</p>',
-                                'prev_text' => '<p class="meta-nav">' . $twentytwentyfour_prev . $twentytwentyfour_previous_label . '</p><p class="post-title">%title</p>',
-                                'in_same_term' => false, // Set to true if you want to navigate within the same event_category
-                                'taxonomy'     => 'event_category', // Specify taxonomy if in_same_term is true
-                            )
-                        );
-                    } else {
-                        // Fallback or simpler navigation if parent theme functions are not available
-                        the_post_navigation(
-                            array(
-                                'next_text' => esc_html__( 'Next event: %title', 'eventmanager-child' ),
-                                'prev_text' => esc_html__( 'Previous event: %title', 'eventmanager-child' ),
-                            )
-                        );
-                    }
+					the_post_navigation(
+						array(
+							'next_text' => '<p class="meta-nav">' . $next_label . ' <span aria-hidden="true">&rarr;</span></p><p class="post-title">%title</p>',
+							'prev_text' => '<p class="meta-nav"><span aria-hidden="true">&larr;</span> ' . $previous_label . '</p><p class="post-title">%title</p>',
+							'in_same_term' => false, // Set to true if you want to navigate within the same event_category
+							// 'taxonomy'     => 'event_category', // Specify taxonomy if in_same_term is true
+						)
+					);
 					?>
 
 				<?php endwhile; // End of the loop. ?>
