@@ -1,0 +1,112 @@
+/*
+Theme Name:   Event Manager Child (Twenty Twenty-Four)
+Theme URI:    https://example.com/event-manager-child/
+Description:  A child theme for the Twenty Twenty-Four theme, to integrate the Simple Event Manager plugin.
+Author:       Your Name
+Author URI:   https://example.com/
+Template:     twentytwentyfour
+Version:      1.0.0
+License:      GNU General Public License v2 or later
+License URI:  LICENSE
+Text Domain:  eventmanager-child
+*/
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 General
+    1.1 Event List Styles
+    1.2 Single Event Styles
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+1.0 General
+--------------------------------------------------------------*/
+/* Add any global child theme styles here if needed.
+   Mostly, we will rely on the parent theme's styling. */
+
+
+/*--------------------------------------------------------------
+1.1 Event List Styles (for shortcode and archive page)
+--------------------------------------------------------------*/
+.sem-event-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2rem; /* Corresponds to --wp--preset--spacing--70 of Twenty Twenty-Four */
+}
+
+.sem-event-item {
+    padding: 1.5rem; /* Corresponds to --wp--preset--spacing--50 */
+    margin-bottom: 1.5rem; /* Corresponds to --wp--preset--spacing--50 */
+    border: 1px solid var(--wp--preset--color--contrast-3, #e0e0e0); /* Using a variable or a fallback */
+    border-radius: var(--wp--custom--border-radius--small, 4px); /* Using a variable or a fallback */
+    background-color: var(--wp--preset--color--base-2, #f9f9f9); /* Using a variable or a fallback */
+}
+
+.sem-event-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem; /* Corresponds to --wp--preset--spacing--20 */
+    font-size: var(--wp--preset--font-size--large, 1.75rem);
+}
+
+.sem-event-item h3 a {
+    text-decoration: none;
+    color: var(--wp--preset--color--contrast, #000000);
+}
+
+.sem-event-item h3 a:hover,
+.sem-event-item h3 a:focus {
+    color: var(--wp--preset--color--primary, #0073aa); /* Example primary color */
+    text-decoration: underline;
+}
+
+.sem-event-datetime,
+.sem-event-location,
+.sem-event-description-label { /* For single event page */
+    font-size: var(--wp--preset--font-size--small, 0.875rem);
+    margin-bottom: 0.5rem; /* Corresponds to --wp--preset--spacing--20 */
+    color: var(--wp--preset--color--contrast-2, #555555);
+}
+
+.sem-event-datetime strong,
+.sem-event-location strong,
+.sem-event-description-label strong {
+    color: var(--wp--preset--color--contrast, #333333);
+}
+
+
+/*--------------------------------------------------------------
+1.2 Single Event Styles (for single-event.php)
+--------------------------------------------------------------*/
+.single-event .entry-header .entry-title {
+    margin-bottom: 1rem; /* More space below title on single page */
+}
+
+.single-event .event-details-meta {
+    background-color: var(--wp--preset--color--base-2, #f9f9f9);
+    padding: 1.5rem; /* Corresponds to --wp--preset--spacing--50 */
+    border: 1px solid var(--wp--preset--color--contrast-3, #e0e0e0);
+    border-radius: var(--wp--custom--border-radius--small, 4px);
+    margin-bottom: 2rem; /* Corresponds to --wp--preset--spacing--70 */
+}
+
+.single-event .event-details-meta p {
+    margin-bottom: 0.75rem; /* Corresponds to --wp--preset--spacing--30 */
+    font-size: var(--wp--preset--font-size--normal, 1rem);
+}
+
+.single-event .event-details-meta p:last-child {
+    margin-bottom: 0;
+}
+
+.single-event .entry-content {
+    margin-top: 1.5rem; /* Corresponds to --wp--preset--spacing--50 */
+}
+
+/* Basic responsiveness for event lists/details if parent theme doesn't cover it well enough */
+@media (max-width: 600px) {
+    .sem-event-item,
+    .single-event .event-details-meta {
+        padding: 1rem; /* Slightly less padding on small screens */
+    }
+}
