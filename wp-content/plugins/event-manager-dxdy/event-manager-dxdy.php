@@ -1,14 +1,13 @@
 <?php
 /**
- * Plugin Name:       Simple Event Manager
- * Plugin URI:        https://example.com/
+ * Plugin Name:       Event Manager DXDY
  * Description:       A simple plugin to manage events, including a CPT, shortcode, and email notifications.
- * Version:           1.0.0
- * Author:            Your Name
- * Author URI:        https://example.com/
+ * Version:           1.2.0
+ * Author:            Kavindu Rajapaksha
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       simple-event-manager
+ * Text Domain:       event-manager-dxdy
+ * Requires at least: 5.0
  * Domain Path:       /languages
  */
 

@@ -83,6 +83,28 @@ get_header();
 											'date'  => current_time('mysql'),
 										];
 										update_post_meta(get_the_ID(), '_event_rsvps', $rsvps);
+
+										// --- Send notification emails ---
+
+										// Admin email
+										$admin_email = get_option('sem_notification_admin_email', get_option('admin_email'));
+										$event_title = get_the_title();
+										$event_url   = get_permalink();
+										$subject_admin = sprintf(__('New RSVP for: %s', 'simple-event-manager'), $event_title);
+										$message_admin = sprintf(
+											__("A new RSVP has been submitted for the event \"%s\":\n\nName: %s\nEmail: %s\nEvent link: %s", 'simple-event-manager'),
+											$event_title, $name, $email, $event_url
+										);
+										wp_mail($admin_email, $subject_admin, $message_admin);
+
+										// User confirmation email
+										$subject_user = sprintf(__('Your RSVP for: %s', 'simple-event-manager'), $event_title);
+										$message_user = sprintf(
+											__("Thank you for registering for \"%s\"!\n\nEvent link: %s\n\nWe look forward to seeing you.", 'simple-event-manager'),
+											$event_title, $event_url
+										);
+										wp_mail($email, $subject_user, $message_user);
+
 										echo '<p style="color:green;">Thank you for your RSVP!</p>';
 									} else {
 										echo '<p style="color:red;">Please enter a valid name and email.</p>';
