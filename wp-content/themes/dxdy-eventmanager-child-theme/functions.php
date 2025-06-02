@@ -31,17 +31,18 @@ function eventmanager_child_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'eventmanager_child_enqueue_styles' );
 
 /**
- * Add custom image sizes if needed, or other theme setup.
+ * Enable menu support and register a primary menu location.
  */
 function eventmanager_child_theme_setup() {
-	// Example: Add support for post thumbnails if not already inherited or if you need specific sizes for events
-	// add_theme_support( 'post-thumbnails' );
-	// set_post_thumbnail_size( 150, 150 ); // Default Post Thumbnail dimensions
+    // Enable support for menus
+    add_theme_support( 'menus' );
 
-	// Example: Add custom image size for event listings
-	// add_image_size( 'event-listing-thumbnail', 300, 200, true ); // 300px wide by 200px tall, hard crop mode
+    // Register a primary menu location
+    register_nav_menus( array(
+        'primary' => __( 'Primary Menu', 'eventmanager-child' ),
+    ) );
 }
-// add_action( 'after_setup_theme', 'eventmanager_child_theme_setup' );
+add_action( 'after_setup_theme', 'eventmanager_child_theme_setup' );
 
 
 /**
